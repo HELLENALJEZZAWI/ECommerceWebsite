@@ -1,0 +1,325 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>   
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="~/assetsLanging/img/favicon.ico">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="~/assetsLanging/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/assetsLanging/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/assetsLanging/css/slicknav.css">
+    <link rel="stylesheet" href="~/assetsLanging/css/flaticon.css">
+    <link rel="stylesheet" href="~/assetsLanging/css/gijgo.css">
+    <link rel="stylesheet" href="~/assetsLanging/css/animate.min.css">
+    <link rel="stylesheet" href="~/assetsLanging/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/assetsLanging/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="~/assetsLanging/css/themify-icons.css">
+    <link rel="stylesheet" href="~/assetsLanging/css/slick.css">
+    <link rel="stylesheet" href="~/assetsLanging/css/nice-select.css">
+    <link rel="stylesheet" href="~/assetsLanging/css/style.css">
+    <style>
+        .navbar {
+            background-color: #fafbfc;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: background-color 0.3s, border-bottom 0.3s;
+            list-style: none;
+            height:80px; /* adjust the height as needed */
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        
+
+
+
+        .navbar-nav .nav-link {
+            color: #331391 !important;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+            .navbar-nav .nav-link:hover {
+                color: #888888 !important;
+                border-radius: 0.25rem;
+            }
+
+        .navbar-nav .dropdown-menu {
+            background-color: #ffffff;
+            border: none;
+            outline: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+            .navbar-nav .dropdown-menu .dropdown-item {
+                color: #331391;
+                font-size: 0.9rem;
+            }
+
+                .navbar-nav .dropdown-menu .dropdown-item:hover {
+                    background-color: #331391;
+                    color: #ffffff !important;
+                }
+
+        .avatar {
+            position: relative;
+            width: 2.375rem;
+            height: 2.375rem;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 50%;
+            transition: transform 0.3s;
+            margin-right: 0.5rem; /* Adjust this value to move the avatar to the left */
+        }
+
+            .avatar img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .avatar:hover {
+                transform: scale(1.1);
+            }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            margin-right: 9rem; /* Adjust this value as needed to move the elements to the left */
+        }
+
+
+        .cart-icon {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-right: 1rem; /* Adjust spacing if needed */
+            font-size: 20px; /* Set the icon size */
+            color: #331391; /* Icon color */
+            transition: color 0.3s, background-color 0.3s; /* Smooth color transitions */
+        }
+
+
+        .avatar {
+            position: relative;
+            display: inline-block;
+        }
+
+        .avatar {
+            position: relative;
+            display: inline-block;
+        }
+
+        .change-image-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 10;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .avatar:hover .change-image-icon {
+            display: block;
+        }
+
+        .avatar img {
+            transition: opacity 0.3s;
+        }
+
+        .avatar:hover img {
+            opacity: 0.7;
+        }
+
+        main {
+            padding-top: 5rem; /* To prevent content from being hidden behind the fixed navbar */
+        }
+    </style>
+</head>
+@{
+    @using System.Security.Claims
+    @using ECommerceWebsite.Models.ViewModals
+
+    var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    var userImage = User.FindFirst(CustomClaimTypes.UserImage)?.Value;
+    var userName = User.FindFirst(ClaimTypes.Name)?.Value;
+}
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-light">
+            <div class="container-fluid">
+                <!-- Logo -->
+                <a class="navbar-brand" href="#">
+                    <img src="~/assetsLanging/img/logo/logo.png" alt="Logo" style=" height: 25px; margin-top: -5px;">
+                </a>
+            
+                <!-- Navbar Links -->
+                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between" id="navbarNav">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="test">test</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Products" asp-action="Index">Products</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="AboutUs">AboutUs</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="EventPage" asp-action="Index">Event</a></li>
+                    </ul>
+
+                    <!-- Cart and User Menu -->
+                    <ul class="navbar-nav">
+                        <!-- Cart Icon -->
+                        <li class="nav-item position-relative cart-icon">
+                            <a class="nav-link" asp-controller="Cart" asp-action="Index">
+                                <i class="fas fa-shopping-cart" style="font-size: 15px; color: #331391 !important;"></i>
+                                <span style="
+                                    background-color:#331391 !important;
+                                    color: #fff;
+                                    font-size: 0.75rem;
+                                    padding: 0.25em 0.6em;
+                                    border: 1px solid #331391 !important;
+                                    box-shadow: 0 0 0.2rem rgba(0, 0, 0, 0.1);
+                                    position: absolute;
+                                    top: -8px;
+                                    right: -8px;
+                                    border-radius: 50%;"
+                                      class="badge rounded-pill">
+                                    @(int.TryParse(Context.Session.GetString("CartCounter"), out int count) ? count : 0)
+                                </span>
+                            </a>
+                        </li>
+
+                        <!-- User Menu -->
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="~/images/usrProfileImages/@userImage" alt="User Photo" class="rounded-circle" style="height: 25px; width: 25px;">
+                                    @userName
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" asp-area="" asp-controller="Users" asp-action="EditUser" asp-route-id="@userID">Settings</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Logout">Log Out</a>
+                                </div>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-user" style="font-size: 15px; color: #331391 !important"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="loginDropdown">
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Login">Login</a>
+                                    <a class="dropdown-item" asp-controller="Account" asp-action="Register">Register</a>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div>
+        @RenderBody()
+    </div>
+    <footer style="background:white">
+        <!-- Footer Start-->
+        <!-- footer-bottom area -->
+        <div class="footer-bottom-area footer-bg">
+            <div class="container">
+                <div class="footer-border">
+                    <div class="row d-flex justify-content-between align-items-center">
+                        <div class="col-xl-10 col-lg-8 ">
+                            <div class="footer-copy-center">
+                                <p>
+                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                    Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-lg-4">
+                            <div class="footer-social f-right">
+                                <a href="#"><i class="fab fa-twitter"></i></a>
+                                <a href="https://www.facebook.com/sai4ull"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fas fa-globe"></i></a>
+                                <a href="#"><i class="fab fa-behance"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End-->
+    </footer>
+
+    <script>
+        function submitImageForm(formId) {
+            var form = document.getElementById(formId);
+            var formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Failed to upload image.");
+                });
+        }
+    </script>  <!-- JS here -->
+
+    <script src="~/assetsLanging/js/vendor/modernizr-3.5.0.min.js"></script>
+    <!-- Jquery, Popper, Bootstrap -->
+    <script src="~/assetsLanging/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="~/assetsLanging/js/popper.min.js"></script>
+    <script src="~/assetsLanging/js/bootstrap.min.js"></script>
+    <!-- Jquery Mobile Menu -->
+    <script src="~/assetsLanging/js/jquery.slicknav.min.js"></script>
+
+    <!-- Jquery Slick , Owl-Carousel Plugins -->
+    <script src="~/assetsLanging/js/owl.carousel.min.js"></script>
+    <script src="~/assetsLanging/js/slick.min.js"></script>
+    <!-- One Page, Animated-HeadLin -->
+    <script src="~/assetsLanging/js/wow.min.js"></script>
+    <script src="~/assetsLanging/js/animated.headline.js"></script>
+    <script src="~/assetsLanging/js/jquery.magnific-popup.js"></script>
+
+    <!-- Date Picker -->
+    <script src="~/assetsLanging/js/gijgo.min.js"></script>
+    <!-- Nice-select, sticky -->
+    <script src="~/assetsLanging/js/jquery.nice-select.min.js"></script>
+    <script src="~/assetsLanging/js/jquery.sticky.js"></script>
+    
+    <!-- counter , waypoint -->
+    <script src="~/assetsLanging/js/jquery.counterup.min.js"></script>
+    <script src="~/assetsLanging/js/waypoints.min.js"></script>
+    <script src="~/assets/js/jquery.countdown.min.js"></script>
+    <!-- contact js -->
+    <script src="~/assetsLanging/js/contact.js"></script>
+    <script src="~/assetsLanging/js/jquery.form.js"></script>
+    <script src="~/assetsLanging/js/jquery.validate.min.js"></script>
+    <script src="~/assetsLanging/js/mail-script.js"></script>
+    <script src="~/assetsLanging/js/jquery.ajaxchimp.min.js"></script>
+    
+    <!-- Jquery Plugins, main Jquery -->	
+    <script src="~/assetsLanging/js/plugins.js"></script>
+    <script src="~/assetsLanging/js/main.js"></script>
+    
+</body>
+</html>

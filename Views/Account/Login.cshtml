@@ -1,0 +1,90 @@
+﻿@model ECommerceWebsite.Models.User
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_RLLayout";
+}
+
+<div class="container-xxl">
+    <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+            <div class="card">
+                <div class="card-body">
+                    <!-- Logo -->
+                    <div class="app-brand justify-content-center">
+                        <a href="index.html" class="app-brand-link gap-2">
+                            <span class="app-brand-logo demo">
+                            </span>
+                            <span class="app-brand-text demo text-body fw-bolder">EVENTO LOGIN</span>
+                        </a>
+                    </div>
+                    <!-- /Logo -->
+                      <form id="formAuthentication" asp-action="Login" method="post">
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Email or Username</label>
+                            <input asp-for="Email" type="text"
+                                   class="form-control"
+                                   id="email"
+                                   name="email"
+                                   placeholder="Enter your email or username"
+                                   autofocus />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3 form-password-toggle">
+                            <div class="d-flex justify-content-between">
+                                <label class="form-label" for="password">Password</label>
+                                <a href="auth-forgot-password-basic.html">
+                                    <small>Forgot Password?</small>
+                                </a>
+                            </div>
+                            <div class="input-group input-group-merge">
+
+                                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                <input asp-for="PasswordHash" name="password" type="password"
+                                       id="password"
+                                       class="form-control"
+                                       name="password"
+                                       placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                       aria-describedby="password" />
+                                <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="remember-me" />
+                                <label class="form-check-label" for="remember-me"> Remember Me </label>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary d-grid w-100">Sign in</button>
+                    </form>
+
+                    <p class="text-center">
+                        <span>New on our platform?</span>
+                        <a href="auth-register-basic.html">
+                            <span>Create an account</span>
+                        </a>
+                    </p>
+                </div>
+            </div>
+            <!-- /Register -->
+            <img src="~/assets3/img/illustrations/tree-3.png"
+                 alt="auth-tree"
+                 class="authentication-image-object-left d-none d-lg-block" />
+            <img src="~/assets3/img/illustrations/auth-basic-mask-light.png"
+                 class="authentication-image d-none d-lg-block"
+                 alt="triangle-bg"
+                 data-app-light-img="illustrations/auth-basic-mask-light.png"
+                 data-app-dark-img="illustrations/auth-basic-mask-dark.png" />
+            <img src="~/assets3/img/illustrations/tree.png"
+                 alt="auth-tree"
+                 class="authentication-image-object-right d-none d-lg-block" />
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+</div>
+

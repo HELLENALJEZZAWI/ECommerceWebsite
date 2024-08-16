@@ -1,0 +1,147 @@
+﻿@model ECommerceWebsite.Models.User
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = "_RLLayout";
+}
+
+<div class="container-xxl">
+    <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+            <div class="card h-100" style="max-width: 700px; margin: 0 auto;">
+                <div class="card-body">
+                    <!-- Logo -->
+                    <div class="app-brand justify-content-center">
+                        <a href="index.html" class="app-brand-link gap-2">
+                            <span class="app-brand-logo demo"></span>
+                            <span class="app-brand-text demo text-body fw-bolder">EVENTO REGISTER </span>
+                        </a>
+                    </div>
+                    <!-- /Logo -->
+                    <form asp-action="Register" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="UserName" class="form-label"></label>
+                                <input asp-for="UserName" class="form-control" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PasswordHash" class="form-label">Password</label>
+                                <input asp-for="PasswordHash" type="password" class="form-control" />
+                                <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="FirstName" class="form-label"></label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="LastName" class="form-label"></label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Address" class="form-label"></label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="City" class="form-label"></label>
+                                <input asp-for="City" class="form-control" />
+                                <span asp-validation-for="City" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Country" class="form-label"></label>
+                                <input asp-for="Country" class="form-control" />
+                                <span asp-validation-for="Country" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PostalCode" class="form-label"></label>
+                                <input asp-for="PostalCode" class="form-control" />
+                                <span asp-validation-for="PostalCode" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="PhoneNumber" class="form-label"></label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="photo" class="form-label">Profile Picture</label>
+                            <input type="file" name="UserPhoto" class="form-control" accept="image/*" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary d-grid w-100">Register</button>
+                    </form>
+
+                    <p class="text-center mt-3">
+                        <span>Already have an account?</span>
+                        <a asp-action="Login"><span>Sign in instead</span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <img src="~/assets3/img/illustrations/tree-3.png"
+             alt="auth-tree"
+             class="authentication-image-object-left d-none d-lg-block" />
+        <img src="~/assets3/img/illustrations/auth-basic-mask-light.png"
+             class="authentication-image d-none d-lg-block"
+             alt="triangle-bg"
+             data-app-light-img="illustrations/auth-basic-mask-light.png"
+             data-app-dark-img="illustrations/auth-basic-mask-dark.png" />
+        <img src="~/assets3/img/illustrations/tree.png"
+             alt="auth-tree"
+             class="authentication-image-object-right d-none d-lg-block" />
+    </div>
+</div>
+</div>
+    </div>
+</div>
+<style>
+    body {
+        background-image: url('assets3\img\pexels-leeloothefirst-5038747.jpg');
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        height: 100vh;
+        margin: 0;
+    }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+/*             background-color: rgba(1, 1, 1, 0.5); /* Black color with 50% opacity */
+ */            z-index: 1;
+        }
+
+    .container-xxl {
+        position: relative;
+        z-index: 2; /* Ensure your content is above the overlay */
+    }
+</style>
+
+

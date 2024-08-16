@@ -1,0 +1,72 @@
+﻿@model IEnumerable<ECommerceWebsite.Models.Events>
+
+@{
+    ViewData["Title"] = "Events List";
+    Layout = "_AdminLayout1";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Event</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventCategory.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                Event Image
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventCategory.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EventDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    <img src="~/images/eventsImages/@item.ProductImage" alt="@item.ProductName" style="width: 100px; height: auto;" />
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProductID" >Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ProductID" >Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ProductID" >Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Back to Home</a>
+</div>

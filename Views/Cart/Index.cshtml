@@ -1,0 +1,229 @@
+﻿@model List<ECommerceWebsite.Models.OrderItem>
+
+@{
+    Layout = "_contantLayout";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+ @if (Model != null && Model.Any())
+{
+    <div class="cart-table-area section-padding-100">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-lg-8">
+                    <div class="cart-title mt-50">
+                        <h2>Shopping Cart</h2>
+                    </div>
+
+                    <div class="cart-table clearfix">
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            @foreach (var item in Model)
+                                {
+                            <tbody>
+                                
+                                    <tr>
+                                        <td class="cart_product_img">
+                                            <a href="#"><img src="img/bg-img/cart3.jpg" alt="Product"></a>
+                                        </td>
+                                        <td class="cart_product_desc">
+                                            <h5>Minimal Plant Pot</h5>
+                                        </td>
+                                        <td class="price">
+                                            <span>$10</span>
+                                        </td>
+                                        <td class="qty">
+                                            <div class="qty-btn d-flex">
+                                                <p>Qty</p>
+                                                <div class="quantity">
+                                                    <span class="qty-minus" onclick="var effect = document.getElementById('qty3'); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                    <input type="number" class="qty-text" id="qty3" step="1" min="1" max="300" name="quantity" value="1">
+                                                    <span class="qty-plus" onclick="var effect = document.getElementById('qty3'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr
+                                    
+                                    </tbody>
+                                }
+                        </table>
+                                    </div>
+                                    </div>
+                                    <div class="col-12 col-lg-4">
+                                        <div class="cart-summary">
+                                            <h5>Cart Total</h5>
+                                            <ul class="summary-table">
+                                                <li><span>subtotal:</span> <span>$140.00</span></li>
+                                                <li><span>delivery:</span> <span>Free</span></li>
+                                                <li><span>total:</span> <span>$140.00</span></li>
+                                            </ul>
+                                            <div class="cart-btn mt-100">
+                                                <a href="cart.html" class="btn amado-btn w-100">Checkout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    </div>
+                                    </div>
+                                    </div>
+                                }
+else
+{
+    <p>Your cart is empty.</p>
+} 
+
+                                <!-- ##### Main Content Wrapper End ##### -->
+@* @if (Model != null && Model.Any())
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.Product?.ProductName</td>
+                                <td>@item.UnitPrice.ToString("C")</td>
+                                <td>
+                                    <form asp-action="UpdateQuantity" method="post" class="d-inline">
+                                        <input type="hidden" name="orderItemID" value="@item.OrderItemID" />
+                                        <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control form-control-sm d-inline" style="width: 80px;" />
+                                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                                    </form>
+                                </td>
+                                <td>@((item.Quantity * item.UnitPrice).ToString("C"))</td>
+                                <td>
+                                    <form asp-action="RemoveFromCart" method="post" class="d-inline">
+                                        <input type="hidden" name="orderItemID" value="@item.OrderItemID" />
+                                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Summary Section -->
+            <div class="col-md-4">
+                <h3>Summary</h3>
+                <div class="mb-3">
+                    <div class="row">
+                        <div class="col">Items:</div>
+                        <div class="col text-end">@Model.Count()</div>
+                    </div>
+                    <div class="row">
+                        <div class="col">Subtotal:</div>
+                        <div class="col text-end"> @Model.Sum(item => item.Quantity * item.UnitPrice).ToString("C")</div>
+                    </div>
+                    <div class="row">
+                        <div class="col">Shipping:</div>
+                        <div class="col text-end"> $5.00</div>
+                    </div>
+                    <div class="row">
+                        <div class="col"><strong>Total:</strong></div>
+                        <div class="col text-end"><strong> 
+                            @if (Context.Session.GetString("NewTotalAmount") is not null)
+                                {
+                                    @Context.Session.GetString("NewTotalAmount")
+                                            }
+                                else
+                                {
+                                    @Model.Sum(item => (item.Quantity * item.UnitPrice)).ToString("C")
+                                }
+
+
+                            </strong>
+                     </div>
+                    </div>
+                </div>
+
+                <!-- Discount Code Input -->
+                <div class="mb-3">
+                    <h4>Discount Code</h4>
+                    <form asp-action="ApplyDiscount" method="post" class="d-inline">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="discountCode" name="DiscountCode" placeholder="Enter discount code" />
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-success" style="background-color:#696cff">Apply</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Payment Section -->
+                <div>
+                    <h3>Payment Information</h3>
+                    <p>Won't be stored in database because it is not recommended unless I was the payment provider</p>
+                    <form asp-action="Checkout" method="post">
+                        <h3>Billing Information</h3>
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" name="FullName" placeholder="John Doe" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="address" name="Address" placeholder="123 Main St" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="city" class="form-label">City</label>
+                            <input type="text" class="form-control" id="city" name="City" placeholder="New York" required />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="state" class="form-label">State</label>
+                                <input type="text" class="form-control" id="state" name="State" placeholder="NY" required />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="postalCode" class="form-label">Postal Code</label>
+                                <input type="text" class="form-control" id="postalCode" name="PostalCode" placeholder="10001" required />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="country" class="form-label">Country</label>
+                            <input type="text" class="form-control" id="country" name="Country" placeholder="United States" required />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Proceed to Payment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>Your cart is empty.</p>
+} *@
