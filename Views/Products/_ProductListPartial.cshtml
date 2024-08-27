@@ -3,20 +3,44 @@
 
 @foreach (var item in Model)
 {
-    <div class="col-lg-4 col-md-6 portfolio-item filter-@item.Category.CategoryName" data-category="@item.Category.CategoryName">
-        <div class="portfolio-wrap">
-            <img src="@Url.Content("~/images/productsImages/" + item.ProductImage)" class="img-fluid main-product-image" alt="">
-            <div class="portfolio-info">
-                <h4>@item.ProductName</h4>
-                <p>@item.ProductDescription</p>
-                <p>Price: @item.Price</p>
-                <p>Discount: @item.Discount</p>
-                <p>Status: @item.ProductStatus</p>
-                <div class="portfolio-links">
-                    <a asp-action="Details" asp-route-id="@item.ProductID" class="portfolio-lightbox"><i class="bx bx-plus"></i></a>
-                    <a asp-action="Details" asp-route-id="@item.ProductID"><i class="bx bx-link"></i></a>
+    @if ((item.ProductStatus == ECommerceWebsite.Constants.ProductStatus.Active || item.ProductStatus == ECommerceWebsite.Constants.ProductStatus.OutOfStock) && item.Category.CategoryStatus == ECommerceWebsite.Constants.CategoryStatus.Active)
+    {
+        <!-- Single Product Area -->
+        <div class="col-12 col-sm-6 col-md-4 mb-4">
+            <div class="single-product-wrapper">
+                <!-- Product Image -->
+                <div class="product-img">
+                    <a asp-action="Details" asp-route-id="@item.ProductID">
+                        <img src="@Url.Content("~/images/productsImages/" + item.ProductImage)" class="img-fluid main-product-image" alt="@item.ProductName">
+                    </a>
+                    <!-- Hover Thumb (Optional) -->
+                </div>
+
+                <!-- Product Description -->
+                <div class="product-description d-flex align-items-center justify-content-between">
+                    <!-- Product Meta Data -->
+                    <div class="product-meta-data">
+                        <div style="background:#331391" class="line"></div>
+                        <p style="color:#331391" class="product-price">@item.Price</p>
+                        <a asp-action="Details" asp-route-id="@item.ProductID">
+                            <h6>@item.ProductName</h6>
+                        </a>
+                    </div>
+                    <!-- Ratings & Cart -->
+                    <div class="ratings-cart text-right">
+                        <div class="cart">
+                            <form asp-controller="Cart1" asp-action="AddToCart" method="post">
+                                <input type="hidden" name="productId" value="@item.ProductID" />
+                                <input type="hidden" name="quantity" value="1" />
+                                <button type="submit" data-toggle="tooltip" data-placement="left" title="Add to Cart" style="background:none; border:none; padding:0;">
+                                    <img src="~/assets2/img/core-img/cart.png" alt="Add to Cart">
+                                </button>
+                            </form>
+                           
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 }

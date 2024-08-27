@@ -29,5 +29,6 @@ namespace ECommerceWebsite.Models
         public decimal Discount { get; set; } = 0;
 
 
+
     }
 }

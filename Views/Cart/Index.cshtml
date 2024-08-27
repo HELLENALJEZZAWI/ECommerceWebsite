@@ -19,10 +19,10 @@
         @TempData["SuccessMessage"]
     </div>
 }
- @if (Model != null && Model.Any())
+@if (Model != null && Model.Any())
 {
     <div class="cart-table-area section-padding-100">
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-12 col-lg-8">
                     <div class="cart-title mt-50">
@@ -30,70 +30,83 @@
                     </div>
 
                     <div class="cart-table clearfix">
-                        <table class="table table-responsive">
-                            <thead>
+                        <table class="table table-responsive table-hover table-bordered">
+                            <thead class="thead-light">
                                 <tr>
-                                    <th></th>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
+                                    <th class="text-center">Image</th>
+                                    <th class="text-center">Name</th>
+                                    <th class="text-center">Price</th>
+                                    <th class="text-center">Quantity</th>
+                                    <th class="text-center">Total</th>
+                                    <th class="text-center">Actions</th>
                                 </tr>
                             </thead>
-                            @foreach (var item in Model)
-                                {
                             <tbody>
-                                
+                                @foreach (var item in Model)
+                                {
                                     <tr>
-                                        <td class="cart_product_img">
-                                            <a href="#"><img src="img/bg-img/cart3.jpg" alt="Product"></a>
+                                        <td class="cart_product_img text-center align-middle">
+                                            <a asp-action="Details" asp-route-id="@item.ProductID">
+                                                <img src="@Url.Content("~/images/productsImages/" + item.Product.ProductImage)" class="img-fluid main-product-image rounded" alt="@item.Product.ProductName" style="width: 60px; height: 60px; object-fit: cover;">
+                                            </a>
                                         </td>
-                                        <td class="cart_product_desc">
-                                            <h5>Minimal Plant Pot</h5>
-                                        </td>
-                                        <td class="price">
-                                            <span>$10</span>
-                                        </td>
-                                        <td class="qty">
-                                            <div class="qty-btn d-flex">
-                                                <p>Qty</p>
-                                                <div class="quantity">
-                                                    <span class="qty-minus" onclick="var effect = document.getElementById('qty3'); var qty = effect.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 1 ) effect.value--;return false;"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                                    <input type="number" class="qty-text" id="qty3" step="1" min="1" max="300" name="quantity" value="1">
-                                                    <span class="qty-plus" onclick="var effect = document.getElementById('qty3'); var qty = effect.value; if( !isNaN( qty )) effect.value++;return false;"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                        <td class="text-center align-middle">@item.Product?.ProductName</td>
+                                        <td class="text-center align-middle">@item.UnitPrice.ToString("C")</td>
+                                        <td class="text-center align-middle">
+                                            <form asp-action="UpdateQuantity" method="post" class="d-inline">
+                                                <input type="hidden" name="orderItemID" value="@item.OrderItemID" />
+                                                <div class="input-group input-group-sm">
+                                                    <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control text-center" style="width: 60px;" />
+                                                    <div class="input-group-append">
+                                                        <button type="submit" class="btn btn-outline-primary" style="border-radius: 0 4px 4px 0;">Update</button>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </form>
                                         </td>
-                                    </tr
-                                    
-                                    </tbody>
+                                        <td class="text-center align-middle">@((item.Quantity * item.UnitPrice).ToString("C"))</td>
+                                        <td class="text-center align-middle">
+                                            <form asp-action="RemoveFromCart" method="post" class="d-inline">
+                                                <input type="hidden" name="orderItemID" value="@item.OrderItemID" />
+                                                <button type="submit" class="btn btn-outline-danger btn-sm">Remove</button>
+                                            </form>
+                                        </td>
+                                    </tr>
                                 }
+                            </tbody>
                         </table>
-                                    </div>
-                                    </div>
-                                    <div class="col-12 col-lg-4">
-                                        <div class="cart-summary">
-                                            <h5>Cart Total</h5>
-                                            <ul class="summary-table">
-                                                <li><span>subtotal:</span> <span>$140.00</span></li>
-                                                <li><span>delivery:</span> <span>Free</span></li>
-                                                <li><span>total:</span> <span>$140.00</span></li>
-                                            </ul>
-                                            <div class="cart-btn mt-100">
-                                                <a href="cart.html" class="btn amado-btn w-100">Checkout</a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    </div>
-                                    </div>
-                                    </div>
-                                }
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="cart-summary p-4 bg-light shadow-sm rounded">
+                        <h5>Cart Total</h5>
+                        <ul class="summary-table list-unstyled">
+                            <li class="d-flex justify-content-between"><span>Subtotal:</span> <span>$140.00</span></li>
+                            <li class="d-flex justify-content-between"><span>Delivery:</span> <span>Free</span></li>
+                            <li class="d-flex justify-content-between font-weight-bold"><span>Total:</span> <span>$140.00</span></li>
+                        </ul>
+                        <div class="cart-btn mt-4">
+                            <a href="checkout.html" class="btn btn-success btn-block">Proceed to Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 else
 {
-    <p>Your cart is empty.</p>
-} 
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 text-center">
+                <h3>Your cart is empty.</h3>
+                <a href="index.html" class="btn btn-primary mt-3">Continue Shopping</a>
+            </div>
+        </div>
+    </div>
+}
 
-                                <!-- ##### Main Content Wrapper End ##### -->
+
+<!-- ##### Main Content Wrapper End ##### -->
 @* @if (Model != null && Model.Any())
 {
     <div class="container">

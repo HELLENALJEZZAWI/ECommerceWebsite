@@ -26,7 +26,9 @@ namespace ECommerceWebsite.Controllers
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Eventses.Include(e => e.EventCategory);
+            var applicationDbContext = _context.Eventses
+        .Include(e => e.EventCategory)
+        .Where(e => !e.IsDeleted); // Exclude soft-deleted events
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -56,7 +58,16 @@ namespace ECommerceWebsite.Controllers
                     ViewData["CategoryEventID"] = new SelectList(_context.EventCategories, "CategoryID", "CategoryName", events.CategoryEventID);
                     return View(events);
                 }
+                var locations = new List<SelectListItem>
+    {
+        new SelectListItem { Value = "1", Text = "Irbid" },
+        new SelectListItem { Value = "2", Text = "Amman " },
+        new SelectListItem { Value = "3", Text = "Ajloun" },
+        new SelectListItem { Value = "4", Text = "Zarqa" },
+        new SelectListItem { Value = "5", Text = "Salt" }
+    };
 
+                ViewBag.LocationOptions = locations;
                 events.EventCategory = eventCategory;
 
                 // Set the directory path for event images
@@ -128,11 +139,14 @@ namespace ECommerceWebsite.Controllers
                 return NotFound();
             }
 
-            var events = await _context.Eventses.FindAsync(id);
+            var events = await _context.Eventses
+                .FirstOrDefaultAsync(e => e.ProductID == id && !e.IsDeleted); // Exclude soft-deleted events
+
             if (events == null)
             {
                 return NotFound();
             }
+
             ViewData["CategoryEventID"] = new SelectList(_context.EventCategories, "CategoryID", "CategoryName", events.CategoryEventID);
             return View(events);
         }
@@ -200,10 +214,12 @@ namespace ECommerceWebsite.Controllers
             var events = await _context.Eventses.FindAsync(id);
             if (events != null)
             {
-                _context.Eventses.Remove(events);
+                // Mark as deleted
+                events.IsDeleted = true;
+                _context.Update(events);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

@@ -18,6 +18,7 @@ namespace ECommerceWebsite.Context
         public DbSet<EventCategory> EventCategories { get; set; }
         public DbSet<Events> Eventses { get; set; }
         public DbSet<EventPhoto> EventPhotos { get; set; }
+        public DbSet<CartItem1> CartItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -2,8 +2,175 @@
 
 @{
     ViewData["Title"] = "Product Details";
+    Layout = "_contantLayout";
+
 }
+
 <style>
+
+    .cart-btn {
+        align-items: center;
+    }
+
+    .quantity {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+        .quantity .qty-minus,
+        .quantity .qty-plus {
+            background-color: #f0f0f0;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            border: none;
+        }
+
+            .quantity .qty-minus:hover,
+            .quantity .qty-plus:hover {
+                background-color: #ddd;
+            }
+
+        .quantity .qty-text {
+            text-align: center;
+            border: none;
+            width: 50px;
+            font-size: 16px;
+            height: 100%;
+        }
+
+        .quantity input::-webkit-outer-spin-button,
+        .quantity input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .quantity input[type="number"] {
+            -moz-appearance: textfield;
+        }
+</style>
+</style>
+
+<!-- Product Details Area Start -->
+<div class="single-product-area section-padding-100 clearfix">
+    <div class="container-fluid">
+
+
+        <div class="row">
+            <div class="col-12 col-lg-7">
+                <div class="single_product_thumb">
+                    <div id="product_details_slider" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li>
+                                @foreach (var photo in Model.ProductPhotos)
+                                {
+                                    <div class="swiper-slide">
+                                        <img src="@Url.Content("~/images/eventsImages/" + photo.FilePath)" class="card-img-top" alt="Event Image" />
+                                    </div>
+                                }
+                            </li>
+                        </ol>
+                        <div class="carousel-inner">
+                            @foreach (var photo in Model.ProductPhotos)
+                            {
+                                <div class="swiper-slide">
+                                    <img src="@Url.Content("~/images/productsImages/" + photo.FilePath)" class="card-img-top" alt="Event Image" />
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-lg-5">
+                <div class="single_product_desc">
+                    <!-- Product Meta Data -->
+                    <div class="product-meta-data">
+                        <div class="line"></div>
+                        <p class="product-price"> @Model.Price.ToString("C")</p>
+                        <a href="product-details.html">
+                            <h6>@Model.ProductName</h6>
+                            <ul>
+                                <li><strong>Discount:</strong> @Model.Discount.ToString("P")</li>
+                                <li><strong>Stock:</strong> @Model.Stock</li>
+                            </ul>
+                        </a>
+                        <!-- Ratings & Review -->
+                        <!-- Avaiable -->
+                        <p class="avaibility"><i class="fa fa-circle"></i>  @Model.ProductStatus</p>
+                    </div>
+
+                    <div class="short_overview my-5">
+                        @Model.ProductDescription
+                    </div>
+
+
+                    <!-- Add to Cart Form -->
+                    <form asp-controller="Cart1" asp-action="AddToCart" method="post">
+                      
+                        <div class="cart-btn d-flex mb-50">
+                            <label style="margin-right: 15px;color:black">Qty:</label>
+                            <div class="quantity">
+                                <span class="qty-minus" id="qty-minus">−</span>
+                                <input type="number" class="qty-text" id="qty" step="1" min="1" max="300" name="quantity" value="1">
+                                <span class="qty-plus" id="qty-plus">+</span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="eventId" value="@Model.ProductID" />
+                        <button style="background-color:#331391" type="submit" class="btn amado-btn">BOOK NOW</button>
+                        <button style="color: #331391; background-color: white; border: 2px solid #331391;"
+                                type="submit" name="addtocart" value="5" class="btn amado-btn">
+                            Back to store
+                        </button>
+
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Product Details Area End -->
+<!-- ##### Main Content Wrapper End ##### -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const qtyInput = document.getElementById('qty');
+        const qtyMinus = document.getElementById('qty-minus');
+        const qtyPlus = document.getElementById('qty-plus');
+
+        qtyMinus.addEventListener('click', function () {
+            let qty = parseInt(qtyInput.value);
+            if (!isNaN(qty) && qty > 1) {
+                qtyInput.value = qty - 1;
+            }
+        });
+
+        qtyPlus.addEventListener('click', function () {
+            let qty = parseInt(qtyInput.value);
+            if (!isNaN(qty)) {
+                qtyInput.value = qty + 1;
+            }
+        });
+    });
+
+</script>
+
+
+
+
+
+
+
+
+
+
+@* <style>
    
 
     .btn{
@@ -72,12 +239,11 @@
                         <li><strong>Date Created:</strong> @Model.DateCreated.ToString("f")</li>
                     </ul>
                     <div class="portfolio-buttons">
-                        <form asp-controller="Cart" asp-action="AddToCart" method="post" style="display:inline;">
-                            <input type="hidden" name="id" value="@Model.ProductID" />
-                            <button type="submit" style="background-color:white; border:1px solid #696cff; color:#696cff ;Button:hover:Background:#696cff " class="btn">
-                         Add to cart </button>
-                        </form>                     
-                        <a asp-action="#" class="btn">Buy Now</a>
+                        <form asp-controller="Cart1" asp-action="AddToCart" method="post">
+                            <input type="hidden" name="productId" value="@Model.ProductID" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <button type="submit" class="custom-button">Add to cart</button>
+                        </form>
                     </div>
                 </div>
                 <div class="portfolio-description">
@@ -260,4 +426,4 @@
         left: -15px;
         top: 20px;
     }
-</style>
+</style> *@

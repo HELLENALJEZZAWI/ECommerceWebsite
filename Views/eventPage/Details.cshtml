@@ -2,263 +2,165 @@
 
 @{
     ViewData["Title"] = "Product Details";
+    Layout = "_contantLayout";
+
 }
 <style>
 
-
-    .btn {
-        font-family: "Raleway", sans-serif;
-        text-transform: uppercase;
-        font-weight: 600;
-        font-size: 12px;
-        letter-spacing: 1px;
-        display: inline-block;
-        padding: 12px 40px;
-        border-radius: 50px;
-        transition: 0.5s;
-        margin-top: 30px;
-        color: #fff;
-        background: #696cff;
-        outline: none;
-        border: none;
-        width: auto;
+    .cart-btn {
+        align-items: center;
     }
 
+    .quantity {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
     }
 
-    .custom-button:hover {
-        background: #696cff; /* Adjust the hover background color as needed */
-    }
-</style>
-<!-- ======= Portfolio Details Section ======= -->
-<section id="portfolio-details" class="portfolio-details">
-    <div class="container">
-
-        <!-- Back Button as Arrow at the Top -->
-        <a href="@Url.Action("Index", "Products")" class="backBtn">
-            <span class="line tLine"></span>
-            <span style="cplor:#888888" class="line mLine"></span>
-            <span style="color:#696cff" class="label">Back</span>
-            <span style="color:#888888" class="line bLine"></span>
-        </a>
-
-        <div class="row gy-4">
-
-            <div class="col-lg-8">
-                <div class="portfolio-details-slider swiper">
-                    <div class="swiper-wrapper align-items-center">
-
-                        @foreach (var photo in Model.EventPhoto)
-                        {
-                            <div class="swiper-slide">
-                                <img src="@Url.Content("~/images/eventsImages/" + photo.FilePath)" class="card-img-top" alt="Event Image" />
-                            </div>
-                        }
-
-                    </div>
-                    <div class="swiper-pagination"></div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="portfolio-info">
-                    <h3>Product Information</h3>
-                    <ul>
-                        <li><strong>Category:</strong> @Model.EventCategory.CategoryName</li>
-                        <li><strong>Price:</strong> @Model.Price.ToString("C")</li>
-                        <li><strong>Discount:</strong> @Model.Discount.ToString("P")</li>
-                        <li><strong>Status:</strong> @Model.ProductStatus</li>
-                        <li><strong>Stock:</strong> @Model.Stock</li>
-                        <li><strong>Date Created:</strong> @Model.DateCreated.ToString("f")</li>
-                    </ul>
-                    <div class="portfolio-buttons">
-                        <form asp-controller="Cart" asp-action="AddToCart" method="post" style="display:inline;">
-                            <input type="hidden" name="id" value="@Model.ProductID" />
-                            <button type="submit" style="background-color:white; border:1px solid #696cff; color:#696cff ;Button:hover:Background:#696cff " class="btn">
-                                Add to cart
-                            </button>
-                        </form>
-                        <a asp-action="#" class="btn">Buy Now</a>
-                    </div>
-                </div>
-                <div class="portfolio-description">
-                    <h2>Product Description</h2>
-                    <p>
-                        @Model.ProductDescription
-                    </p>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-</section>
-
-<!-- Include the following CSS in your style section or external stylesheet -->
-<style>
-    .portfolio-details {
-        padding: 60px 0;
-    }
-
-        .portfolio-details .portfolio-details-slider img {
-            width: 100%;
-            height: auto;
+        .quantity .qty-minus,
+        .quantity .qty-plus {
+            background-color: #f0f0f0;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            border: none;
         }
 
-    .portfolio-info {
-        margin-bottom: 30px;
-    }
-
-        .portfolio-info ul {
-            list-style: none;
-            padding: 0;
-        }
-
-            .portfolio-info ul li {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 10px 0;
-                border-bottom: 1px solid #ddd;
+            .quantity .qty-minus:hover,
+            .quantity .qty-plus:hover {
+                background-color: #ddd;
             }
 
-                .portfolio-info ul li strong {
-                    font-weight: 600;
-                }
-
-    .portfolio-description h2 {
-        font-size: 26px;
-        font-weight: 700;
-        color: #333;
-        margin-bottom: 20px;
-    }
-
-    .portfolio-description p {
-        font-size: 15px;
-        color: #666;
-        line-height: 24px;
-    }
-
-    .portfolio-buttons {
-        margin-top: 20px;
-    }
-
-    .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        font-size: 16px;
-        font-weight: 600;
-        text-align: center;
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        color: #fff;
-        transition: background-color 0.3s ease;
-    }
-
-
-    .btn-primary {
-        background-color: #007bff;
-    }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
+        .quantity .qty-text {
+            text-align: center;
+            border: none;
+            width: 50px;
+            font-size: 16px;
+            height: 100%;
         }
 
-    .btn1:hover {
-        background-color: #0056b3;
-    }
-
-    .btn-success {
-        background-color: #28a745;
-    }
-
-        .btn-success:hover {
-            background-color: #218838;
+        .quantity input::-webkit-outer-spin-button,
+        .quantity input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
 
-    .btn-secondary {
-        background-color: #6c757d;
-    }
-
-        .btn-secondary:hover {
-            background-color: #5a6268;
+        .quantity input[type="number"] {
+            -moz-appearance: textfield;
         }
-
-    a.backBtn {
-        width: 100px;
-        left: 100px;
-        top: 100px;
-        background-color: #f4f4f4;
-        transition: all 0.4s ease;
-        position: fixed;
-        cursor: pointer;
-    }
-
-    span.line {
-        bottom: auto;
-        right: auto;
-        top: auto;
-        left: auto;
-        background-color: #211C1B;
-        border-radius: 10px;
-        width: 100%;
-        left: 0px;
-        height: 2px;
-        display: block;
-        position: absolute;
-        transition: width 0.2s ease 0.1s, left 0.2s ease, transform 0.2s ease 0.3s, background-color 0.2s ease;
-    }
-
-    span.tLine {
-        top: 0px;
-    }
-
-    span.mLine {
-        top: 13px;
-        opacity: 0;
-    }
-
-    span.bLine {
-        top: 26px;
-    }
-
-    .label {
-        position: absolute;
-        left: 0px;
-        top: 5px;
-        width: 100%;
-        text-align: center;
-        transition: all 0.4s ease;
-        font-size: 1em;
-    }
-
-    a.backBtn:hover span.label {
-        left: 25px
-    }
-
-    a.backBtn:hover span.line {
-        left: -10px;
-        height: 5px;
-        background-color:;
-    }
-
-    a.backBtn:hover span.tLine {
-        width: 25px;
-        transform: rotate(-45deg);
-        left: -15px;
-        top: 6px;
-    }
-
-    a.backBtn:hover span.mLine {
-        opacity: 1;
-        width: 30px;
-    }
-
-    a.backBtn:hover span.bLine {
-        width: 25px;
-        transform: rotate(45deg);
-        left: -15px;
-        top: 20px;
-    }
 </style>
+</style>
+
+    <!-- Product Details Area Start -->
+    <div class="single-product-area section-padding-100 clearfix">
+        <div class="container-fluid">
+
+
+            <div class="row">
+                <div class="col-12 col-lg-7">
+                    <div class="single_product_thumb">
+                        <div id="product_details_slider" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                           <li>@foreach (var photo in Model.EventPhoto)
+                            {
+                                <div class="swiper-slide">
+                                    <img src="@Url.Content("~/images/eventsImages/" + photo.FilePath)" class="card-img-top" alt="Event Image" />
+                                </div>
+                            }
+                            </li>
+                        </ol>
+                            <div class="carousel-inner">
+                            @foreach (var photo in Model.EventPhoto)
+                            {
+                                <div class="swiper-slide">
+                                    <img src="@Url.Content("~/images/eventsImages/" + photo.FilePath)" class="card-img-top" alt="Event Image" />
+                                </div>
+                            }
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-5">
+                    <div class="single_product_desc">
+                        <!-- Product Meta Data -->
+                        <div class="product-meta-data">
+                            <div class="line"></div>
+                        <p class="product-price"> @Model.Price.ToString("C")</p>
+                            <a href="product-details.html">
+                                <h6>@Model.ProductName</h6>
+                            </a>
+                            <!-- Ratings & Review -->
+
+                          <!-- Avaiable -->
+                        <p class="avaibility"><i class="fa fa-circle"></i>  @Model.ProductStatus</p>
+                        </div>
+
+                        <div class="short_overview my-5">
+                            @Model.ProductDescription
+                        </div>
+                  
+
+                        <!-- Add to Cart Form -->
+                    <form asp-controller="Cart1" asp-action="AddToCart" method="post">
+                        <div class="form-group">
+                            <label for="location">Event Location:</label>
+                            <input type="text" class="form-control" id="location" name="Location" placeholder="Enter event location" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventDate">Event Date:</label>
+                            <input type="date" class="form-control" id="eventDate" name="EventDate" required>
+                        </div>
+                        <div class="cart-btn d-flex mb-50">
+                            <label style ="margin-right: 15px;color:black">Qty:</label>
+                            <div class="quantity">
+                                <span class="qty-minus" id="qty-minus">−</span>
+                                <input type="number" class="qty-text" id="qty" step="1" min="1" max="300" name="quantity" value="1">
+                                <span class="qty-plus" id="qty-plus">+</span>
+                            </div>
+                        </div>
+                            <input type="hidden" name="eventId" value="@Model.ProductID" />
+                        <button style="background-color:#331391" type="submit" class="btn amado-btn">BOOK NOW</button>
+
+
+                        <button asp-area="" asp-controller="EventPage" asp-action="Index" style="color: #331391; background-color: white; border: 2px solid #331391;"
+                                type="submit" name="addtocart" value="5" class="btn amado-btn">
+                            Back to store
+                        </button>
+                        </form>
+                  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Product Details Area End -->
+
+<!-- ##### Main Content Wrapper End ##### -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const qtyInput = document.getElementById('qty');
+        const qtyMinus = document.getElementById('qty-minus');
+        const qtyPlus = document.getElementById('qty-plus');
+
+        qtyMinus.addEventListener('click', function () {
+            let qty = parseInt(qtyInput.value);
+            if (!isNaN(qty) && qty > 1) {
+                qtyInput.value = qty - 1;
+            }
+        });
+
+        qtyPlus.addEventListener('click', function () {
+            let qty = parseInt(qtyInput.value);
+            if (!isNaN(qty)) {
+                qtyInput.value = qty + 1;
+            }
+        });
+    });
+
+</script>

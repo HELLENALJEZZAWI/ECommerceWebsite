@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Order Confirmation";
+    Layout = "_contantLayout";
+
+}
+<style>
+    /* Centering styles */
+    .centered-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Full viewport height */
+        text-align: center;
+    }
+
+    .thank-you-message {
+        padding: 2rem;
+        background-color: #ffffff; /* White background for the message box */
+        border-radius: 8px; /* Rounded corners */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    }
+</style>
+
+<div class="centered-container">
+    <div class="thank-you-message">
+        <h2>Thank You for Your Order!</h2>
+        <p>Your order has been successfully placed. We will send you a confirmation email shortly.</p>
+    </div>
+</div>

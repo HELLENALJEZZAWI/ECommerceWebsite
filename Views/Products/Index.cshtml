@@ -1,67 +1,65 @@
-﻿@model ProductIndexViewModel
+﻿@model IEnumerable<Product>
 
 @{
     ViewData["Title"] = "Products";
     Layout = "_contantLayout";
 
 }
+<style>
+    /* Adjust container to make product images larger */
+.amado_product_area {
+    width: 100%;
+    padding: 0;
+}
 
-@* <section id="portfolio" class="portfolio">
-    <div class="container" data-aos="fade-up">
-        <div class="section-title">
-            <h2>Products</h2>
-            <p>Our products are made with love Discover more products you will love</p>
-        </div>
+/* Ensure container spans full width */
+.container-fluid {
+    padding: 0;
+    width: 100%;
+}
 
-        <div class="row" data-aos="fade-up" data-aos-delay="100">
-            <div class="col-lg-12 d-flex justify-content-center">
-                <ul id="portfolio-flters" >
-                    <li data-filter="*" class="filter-active" onclick="filterByCategory('all')">All</li>
-                    @foreach (var category in Model.Categories)
-                    {
-                        if(category.CategoryStatus == ECommerceWebsite.Constants.CategoryStatus.Active)
-                        {
-                            <li data-filter=".filter-@category.CategoryName" onclick="filterByCategory('@category.CategoryName')">@category.CategoryName</li>
-                        }
-                    }
-                </ul>
-            </div>
-        </div>
+/* Larger product image styling */
+.product-img {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
 
-        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200" id="productList">
-            @foreach (var item in Model.Products)
-            {
-                @if ((item.ProductStatus == ECommerceWebsite.Constants.ProductStatus.Active || item.ProductStatus == ECommerceWebsite.Constants.ProductStatus.OutOfStock) && item.Category.CategoryStatus == ECommerceWebsite.Constants.CategoryStatus.Active)
-                {
-                    <div class="col-lg-4 col-md-6 portfolio-item filter-@item.Category.CategoryName" data-category="@item.Category.CategoryName">
-                        <div class="portfolio-wrap">
-                            <img src="@Url.Content("~/images/productsImages/" + item.ProductImage)" class="img-fluid main-product-image" alt="@item.ProductName">
-                            <div class="portfolio-info">
-                                <h4>@item.ProductName</h4>
-                                <p>@item.ProductDescription</p>
-                                <p>Price: @item.Price</p>
-                                <p>Discount: @item.Discount</p>
-                                <p>Status: @item.ProductStatus</p>
-                                <div class="portfolio-links">
-                                    <form asp-controller="Cart" asp-action="AddToCart" method="post" style="display:inline;">
-                                        <input type="hidden" name="id" value="@item.ProductID" />
-                                        <button style="background: none; outline:none; border:none;" type="submit" class="portfolio"> <a class="portfolio"><i class="bx bx-plus"></i></a></button>
-                                    </form>
-                                    <a asp-action="Details" asp-route-id="@item.ProductID"><i class="bx bx-link"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-            }
-        </div>
+.product-img img {
+    height: 300px; /* Increase height as needed */
+    object-fit: cover; /* Maintain aspect ratio and cover the area */
+    width: 100%;
+    display: block; /* Remove extra space below the image */
+}
 
-        <div class="text-center mt-4">
-            <button style="background: #696cff ; outline:none;" id="showMoreBtn" class="btn btn-primary showMoreButton">Show More</button>
-        </div>
-    </div>
-</section>
- *@
+/* Hover image styling (if used) */
+.hover-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-img:hover .hover-img {
+    opacity: 1;
+}
+
+/* Adjust spacing for product items */
+.single-product-wrapper {
+    margin-bottom: 30px; /* Space between rows */
+}
+
+/* Responsive adjustments */
+
+
+
+</style>
+
+
 <div class="shop_sidebar_area">
 
     <!-- ##### Single Widget ##### -->
@@ -70,160 +68,68 @@
         <h6 class="widget-title mb-30">Catagories</h6>
 
         <!--  Catagories  -->
-        <div class="catagories-menu" id="portfolio-flters">
-            <ul id="portfolio-flters">
-                <li data-filter="*" class="filter-active" onclick="filterByCategory('all')">All</li>
-                @foreach (var category in Model.Categories.Where(c => c.CategoryStatus == ECommerceWebsite.Constants.CategoryStatus.Active))
+        <div class="catagories-menu">
+            <ul>
+                <li class="active" data-category-id="null"><a href="#">All</a></li>
+                @foreach (var vn in ViewBag.Categories)
                 {
-                    <li data-filter=".filter-@category.CategoryName" onclick="filterByCategory('@category.CategoryName')">@category.CategoryName</li>
+                    <li >
+                        <a href="#" onclick="loadProducts('@vn.CategoryID')">
+                            @vn.CategoryName
+                        </a>
+                    </li>
                 }
             </ul>
         </div>
+
     </div>
 
-    <!-- ##### Single Widget ##### -->
-    <div class="widget brands mb-50">
-        <!-- Widget Title -->
-        <h6 class="widget-title mb-30">Brands</h6>
-
-        <div class="widget-desc">
-            <!-- Single Form Check -->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="amado">
-                <label class="form-check-label" for="amado">Amado</label>
-            </div>
-            <!-- Single Form Check -->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="ikea">
-                <label class="form-check-label" for="ikea">Ikea</label>
-            </div>
-            <!-- Single Form Check -->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="furniture">
-                <label class="form-check-label" for="furniture">Furniture Inc</label>
-            </div>
-            <!-- Single Form Check -->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="factory">
-                <label class="form-check-label" for="factory">The factory</label>
-            </div>
-            <!-- Single Form Check -->
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="artdeco">
-                <label class="form-check-label" for="artdeco">Artdeco</label>
-            </div>
-        </div>
-    </div>
-
-    <!-- ##### Single Widget ##### -->
-    <div class="widget color mb-50">
-        <!-- Widget Title -->
-        <h6 class="widget-title mb-30">Color</h6>
-
-        <div class="widget-desc">
-            <ul class="d-flex">
-                <li><a href="#" class="color1"></a></li>
-                <li><a href="#" class="color2"></a></li>
-                <li><a href="#" class="color3"></a></li>
-                <li><a href="#" class="color4"></a></li>
-                <li><a href="#" class="color5"></a></li>
-                <li><a href="#" class="color6"></a></li>
-                <li><a href="#" class="color7"></a></li>
-                <li><a href="#" class="color8"></a></li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- ##### Single Widget ##### -->
-    <div class="widget price mb-50">
-        <!-- Widget Title -->
-        <h6 class="widget-title mb-30">Price</h6>
-
-        <div class="widget-desc">
-            <div class="slider-range">
-                <div data-min="10" data-max="1000" data-unit="$" class="slider-range-price ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" data-value-min="10" data-value-max="1000" data-label-result="">
-                    <div class="ui-slider-range ui-widget-header ui-corner-all"></div>
-                    <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
-                    <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"></span>
-                </div>
-                <div class="range-price">$10 - $1000</div>
-            </div>
-        </div>
-    </div>
 </div>
 
  
  
- <div class="amado_product_area section-padding-100">
+<div class="amado_product_area section-padding-100">
     <div class="container-fluid">
-
+        <!-- Top Bar -->
         <div class="row">
             <div class="col-12">
                 <div class="product-topbar d-xl-flex align-items-end justify-content-between">
+                    <!-- Add content for the top bar if needed -->
                 </div>
             </div>
         </div>
 
-        <div class="row">
-              @foreach (var item in Model.Products)
-            {
-                @if ((item.ProductStatus == ECommerceWebsite.Constants.ProductStatus.Active || item.ProductStatus == ECommerceWebsite.Constants.ProductStatus.OutOfStock) && item.Category.CategoryStatus == ECommerceWebsite.Constants.CategoryStatus.Active)
-                {
-                    <!-- Single Product Area -->
-                    <div class="col-12 col-sm-6 col-md-12 col-xl-6">
-                        <div class="single-product-wrapper">
-                            <!-- Product Image -->
-                            <div class="product-img">
-                                <a asp-action="Details" asp-route-id="@item.ProductID">
-                                    <img src="@Url.Content("~/images/productsImages/" + item.ProductImage)" class="img-fluid main-product-image" alt="@item.ProductName">
-                                </a>                                 <!-- Hover Thumb -->
-                                <img class="hover-img" src="img/product-img/product2.jpg" alt="">
-                            </div>
-
-                            <!-- Product Description -->
-                            <div class="product-description d-flex align-items-center justify-content-between">
-                                <!-- Product Meta Data -->
-                                <div class="product-meta-data">
-                                    <div class="line"></div>
-                                    <p class="product-price">@item.Price</p>
-                                    <a href="product-details.html">
-                                        <h6>@item.ProductName</h6>
-                                    </a>
-                                </div>
-                                <!-- Ratings & Cart -->
-                                <div class="ratings-cart text-right">
-                                    <div class="cart">
-                                        <form asp-controller="Cart" asp-action="AddToCart" method="post" style="display:inline;">
-                                            <input type="hidden" name="id" value="@item.ProductID" />
-                                            <button type="submit" data-toggle="tooltip" data-placement="left" title="Add to Cart" style="background:none; border:none; padding:0;">
-                                                <img src="~/assets2/img/core-img/cart.png" alt="Add to Cart">
-                                            </button>
-                                        </form>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                }
-
-            }
+        <!-- Products Grid -->
+        <div class="row" id="productContainer">
+           
+                @Html.Partial("_ProductListPartial", Model)
+          
         </div>
     </div>
 </div>
 
-<!-- ##### Main Content Wrapper End ##### -->
-<script>
-    function filterByCategory(category) {
-        $.ajax({
-            type: "GET",
-            url: "/FilterByCategory",
-            data: { category: category },
-            success: function (data) {
-                $("#product-list").html(data);
-            }
-        });
-    }
-</script>
+
+    <script>
+        function loadProducts(categoryId) {
+           
+            $.ajax({
+            url: '@Url.Action("GetProductPartialView", "Products")',
+                type: 'GET',
+                data: {
+                    categoryId: categoryId
+                },
+                success: function (data) {
+                    $('#productContainer').html(data);
+                },
+                error: function () {
+                    alert('Failed to load products.');
+                }
+            });
+        }
+    </script>
+
+
+
+
 
 

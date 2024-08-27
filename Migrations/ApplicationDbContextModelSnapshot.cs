@@ -22,6 +22,39 @@ namespace ECommerceWebsite.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ECommerceWebsite.Models.CartItem1", b =>
+                {
+                    b.Property<int>("CartItemID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemID"));
+
+                    b.Property<string>("CartID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("EventID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("CartItemID");
+
+                    b.HasIndex("EventID");
+
+                    b.HasIndex("ProductID");
+
+                    b.ToTable("CartItems");
+                });
+
             modelBuilder.Entity("ECommerceWebsite.Models.Category", b =>
                 {
                     b.Property<int>("CategoryID")
@@ -156,6 +189,9 @@ namespace ECommerceWebsite.Migrations
 
                     b.Property<DateTime>("EventDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Location")
                         .IsRequired()
@@ -448,6 +484,21 @@ namespace ECommerceWebsite.Migrations
                     b.HasKey("UserID");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ECommerceWebsite.Models.CartItem1", b =>
+                {
+                    b.HasOne("ECommerceWebsite.Models.Events", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventID");
+
+                    b.HasOne("ECommerceWebsite.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductID");
+
+                    b.Navigation("Event");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ECommerceWebsite.Models.EventPhoto", b =>

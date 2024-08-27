@@ -1,0 +1,93 @@
+﻿@model ECommerceWebsite.Models.ViewModals.CartViewModel
+
+@{
+    Layout = "_contantLayout";
+}
+
+
+
+<div class="cart-table-area section-padding-100">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-8">
+                <div class="cart-title mt-50">
+                    <h2>Shopping Cart</h2>
+                </div>
+
+                <div class="cart-table clearfix">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Image</th>
+                                <th>Item</th>
+                                <th>Quantity</th>
+                                <th>Total Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.CartItems)
+                            {
+                                <tr>
+                                    <td>
+                                        @if (item.Product != null && !string.IsNullOrEmpty(item.Product.ProductImage))
+                                        {
+                                            <img src="@Url.Content("~/images/productsImages/" + item.Product.ProductImage)" class="img-fluid main-product-image rounded" alt="@item.Product.ProductName" style="width: 60px; height: 60px; object-fit: cover;">
+                                        }
+                                        else if (item.Event != null && !string.IsNullOrEmpty(item.Event.ProductImage))
+                                        {
+                                            <img src="@Url.Content("~/images/eventsImages/" + item.Event.ProductImage)" class="img-fluid main-product-image rounded" alt="@item.Event.ProductName" style="width: 60px; height: 60px; object-fit: cover;">
+                                        }
+                                        else
+                                        {
+                                            <img src="@Url.Content("~/images/default-placeholder.png")" class="img-fluid main-product-image rounded" alt="No Image Available" style="width: 60px; height: 60px; object-fit: cover;">
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.Product != null)
+                                        {
+                                            @item.Product.ProductName
+                                        }
+                                        else if (item.Event != null)
+                                        {
+                                            @item.Event.ProductName
+                                        }
+                                        else
+                                        {
+                                            <span>Unknown Item</span>
+                                        }
+                                    </td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.TotalPrice.ToString("c")</td>
+                                    <td>
+                                        <form asp-action="RemoveFromCart" asp-route-cartItemId="@item.CartItemID" method="post">
+                                            <button type="submit" class="btn btn-danger">Remove</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="cart-summary">
+                    <h5>Cart Total</h5>
+                    <ul class="summary-table">
+                        <li><span>Subtotal:</span> <span>@Model.TotalAmount.ToString("c")</span></li>
+                        <li><span>Delivery:</span> <span>Free</span></li>
+                        <li><span>Total:</span> <span>@Model.TotalAmount.ToString("c")</span></li>
+                    </ul>
+                    <div class="cart-btn mt-100">
+                        <a href="@Url.Action("Checkout", "Checkout2")" class="btn amado-btn w-100" style="background:#331391;">
+                            Checkout
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ##### Main Content Wrapper End ##### -->

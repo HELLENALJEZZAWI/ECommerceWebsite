@@ -6,43 +6,29 @@
     ViewData["Title"] = "Events Index";
     Layout = "_contantLayout";
 }
-
-@*
-<form method="get" action="/eventPage/Index">
-    <div class="form-group">
-        <label for="categoryFilter">Filter by Category:</label>
-        <select id="categoryFilter" name="id" class="form-control mt-3">
-            <option value="@null">All</option>
-            @foreach (var vn in Model.EventCategories)
-            {
-                <option value="@vn.CategoryID">@vn.CategoryName</option>
-            }
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary my-3">Apply Filter</button>
-</form>
-
-
-<h2>Events</h2>
-<div class="row">
-    @foreach (var ev in Model.Events)
-    {
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <img src="@Url.Content("~/images/eventsImages/" + ev.ProductImage)" class="card-img-top" alt="@ev.ProductName" />
-                <div class="card-body">
-                    <h5 class="card-title">@ev.ProductName</h5>
-                    <p class="card-text">@ev.ProductDescription</p>
-                    <p class="card-text">Price: @ev.Price</p>
-                    <p class="card-text">Discount: @ev.Discount</p>
-                    <p class="card-text">Location: @ev.Location</p>
-                    <p class="card-text">Event Date: @ev.EventDate.ToString("d MMM yyyy")</p>
-                    <!-- Add more event details as needed -->
-                </div>
-            </div>
-        </div>
+<style>
+    .single-products-catagory {
+        height: 300px; /* Adjust the height as needed */
+        overflow: hidden; /* Ensure that content overflow is hidden */
+        position: relative;
     }
-</div> *@
+
+        .single-products-catagory img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures the image covers the container while maintaining aspect ratio */
+        }
+
+    .hover-content {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        color: white;
+        text-align: center;
+        padding: 10px;
+    }
+</style>
+
 
 
 
@@ -57,10 +43,11 @@
                         <img src="@Url.Content("~/images/eventsImages/" + ev.ProductImage)" class="card-img-top" alt="@ev.ProductName" />
                         <!-- Hover Content -->
                         <div class="hover-content">
-                            <div class="line"></div>
-                            <p>@ev.Price</p>
-                        <h4 > @ev.ProductName</h4>
+                        <div style="background-color:#331391" class="line"></div>
+                        <p style="color:antiquewhite;text-align:left">@ev.Price</p>
+                        <h4 style="color:antiquewhite; text-align:left"> @ev.ProductName</h4>
                         </div>
+
                 </div>
             </a>
         }

@@ -1,14 +1,13 @@
 using ECommerceWebsite.Context;
+using ECommerceWebsite.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -26,11 +25,21 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.HttpOnly = true;
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     });
+// **Add these lines**:
+builder.Services.AddHttpContextAccessor(); // Required to access HttpContext in services
+builder.Services.AddSession(); // Register session services
+builder.Services.AddScoped<CartService>(); // Register CartService as a scoped service
+
+builder.Services.AddControllersWithViews(); // Add MVC services
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+else
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
@@ -41,12 +50,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();
+// **Add this line**:
+app.UseSession(); // Enable session management
+
+app.UseAuthentication(); // If you have authentication enabled
 app.UseAuthorization();
-app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=test}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

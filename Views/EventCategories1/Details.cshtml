@@ -5,39 +5,101 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Details</h1>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-lg border-0 rounded-lg">
+            <div class="card-header bg-yellow text-center">
+                <h4 class="my-0">Event Category Details</h4>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.CategoryName)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.CategoryName)
+                    </dd>
 
-<div>
-    <h4>EventCategory</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoryName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CategoryName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoryDescription)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CategoryDescription)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoryStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CategoryStatus)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateCreated)
-        </dd>
-    </dl>
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.CategoryDescription)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.CategoryDescription)
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.CategoryStatus)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.CategoryStatus)
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.DateCreated)
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.DateCreated)
+                    </dd>
+                </dl>
+            </div>
+            <div class="card-footer text-center">
+                <a asp-action="Edit" asp-route-id="@Model?.CategoryID" class="btn btn-yellow btn-lg shadow-lg">
+                    <i class="fas fa-edit"></i> Edit
+                </a>
+                <a asp-action="Index" class="btn btn-white btn-lg shadow-lg ml-3">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.CategoryID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        .card-header.bg-yellow {
+            background-color: #f7c02b;
+        }
+
+        .btn-yellow {
+            background-color: #f7c02b;
+            color: #212529;
+            border: none;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+            .btn-yellow:hover {
+                background-color: #d9a421;
+                transform: scale(1.05);
+            }
+
+        .btn-white {
+            background-color: white;
+            color: #212529;
+            border: 1px solid #ced4da;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+            .btn-white:hover {
+                background-color: #e9ecef;
+                transform: scale(1.05);
+            }
+
+        .form-control {
+            border-radius: 0.25rem;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+            .form-control:focus {
+                border-color: #80bdff;
+                box-shadow: 0 0 5px rgba(128, 189, 255, 0.5);
+            }
+
+        .mt-4 {
+            margin-top: 1.5rem !important;
+        }
+    </style>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

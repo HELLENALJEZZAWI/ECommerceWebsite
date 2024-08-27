@@ -140,36 +140,44 @@ namespace ECommerceWebsite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductID,ProductName,ProductDescription,Price,Discount,CategoryID,Stock,DateCreated")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductID,ProductName,ProductDescription,Price,Discount,ProductImage,ProductStatus,CategoryEventID,Stock,DateCreated,Location,EventDate")] Events events)
         {
-            if (id != product.ProductID)
+            if (id != events.ProductID)
             {
                 return NotFound();
             }
 
-            var productToChange = await _context.Products.FindAsync(id);
+            // Retrieve the existing event from the database
+            var eventToChange = await _context.Eventses.FindAsync(id);
 
-            if (productToChange == null)
+            if (eventToChange == null)
             {
                 return NotFound();
             }
 
-            // Manually update the properties of productToChange with the new values from product
-            productToChange.ProductName = product.ProductName;
-            productToChange.ProductDescription = product.ProductDescription;
-            productToChange.Price = product.Price;
-            productToChange.Discount = product.Discount;
-            productToChange.CategoryID = product.CategoryID;
-            productToChange.Stock = product.Stock;
-            productToChange.DateCreated = product.DateCreated;
+            // Manually update the properties of eventToChange with the new values from events
+            eventToChange.ProductName = events.ProductName;
+            eventToChange.ProductDescription = events.ProductDescription;
+            eventToChange.Price = events.Price;
+            eventToChange.Discount = events.Discount;
+            eventToChange.ProductImage = events.ProductImage;
+            eventToChange.ProductStatus = events.ProductStatus;
+            eventToChange.CategoryEventID = events.CategoryEventID;
+            eventToChange.Stock = events.Stock;
+            eventToChange.DateCreated = events.DateCreated;
+            eventToChange.Location = events.Location;
+            eventToChange.EventDate = events.EventDate;
 
             try
             {
+                // Save the changes to the database
                 await _context.SaveChangesAsync();
+                TempData["Message"] = "Event has been successfully updated.";
+                return Redirect(Request.Headers["Referer"].ToString());
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(product.ProductID))
+                if (!EventsExists(events.ProductID))
                 {
                     return NotFound();
                 }
@@ -179,10 +187,18 @@ namespace ECommerceWebsite.Controllers
                 }
             }
 
-            ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryName", product.CategoryID);
-            TempData["Message"] = "Product has been successfully updated.";
-            return Redirect(Request.Headers["Referer"].ToString());
+            // Repopulate the ViewData for category dropdown
+            ViewData["CategoryEventID"] = new SelectList(_context.EventCategories, "CategoryID", "CategoryName", events.CategoryEventID);
+
+            return View(events);
         }
+
+        // Method to check if the event exists
+        private bool EventsExists(int id)
+        {
+            return _context.Eventses.Any(e => e.ProductID == id);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> SoftDelete(int id)

@@ -40,6 +40,7 @@ namespace ECommerceWebsite.Models
         public string Location { get; set; }
 
         public DateTime EventDate { get; set; } = DateTime.UtcNow;
+        public bool IsDeleted { get; set; }
 
         public ICollection<EventPhoto> EventPhoto { get; set; } = new List<EventPhoto>();
 

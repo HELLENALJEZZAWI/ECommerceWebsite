@@ -1,0 +1,80 @@
+﻿@model ECommerceWebsite.Models.ViewModals.CheckoutViewModel
+@{
+    Layout = "_contantLayout";
+
+}
+
+
+<div class="cart-table-area section-padding-100">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 col-lg-8">
+                <div class="checkout_details_area mt-50 clearfix">
+
+                    <div class="cart-title">
+                        <h2>Checkout</h2>
+                    </div>
+
+                    <form asp-action="ProcessCheckout" method="post">
+                        <div class="form-group">
+                            <label for="FullName">Full Name</label>
+                            <input type="text" class="form-control" id="FullName" name="FullName" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="Address">Address</label>
+                            <input type="text" class="form-control" id="Address" name="Address" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="City">City</label>
+                            <input type="text" class="form-control" id="City" name="City" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="State">State</label>
+                            <input type="text" class="form-control" id="State" name="State" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="ZipCode">Zip Code</label>
+                            <input type="text" class="form-control" id="ZipCode" name="ZipCode" required />
+                        </div>
+
+                        <h4>Payment Information</h4>
+                        <div class="form-group">
+                            <label for="CreditCardNumber">Credit Card Number</label>
+                            <input type="text" class="form-control" id="CreditCardNumber" name="CreditCardNumber" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="ExpirationDate">Expiration Date (MM/YY)</label>
+                            <input type="text" class="form-control" id="ExpirationDate" name="ExpirationDate" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="CVV">CVV</label>
+                            <input type="text" class="form-control" id="CVV" name="CVV" required />
+                        </div>
+
+                        <button style="background-color:#331391" type="submit" class=" btn amado-btn w-50">Checkout</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-12 col-lg-4">
+                <div class="cart-summary">
+                    <h5>Cart Total</h5>
+                    <ul class="summary-table">
+                        @foreach (var item in Model.CartItems)
+                        {
+                      
+                        <li><span>subtotal:</span> <span><td>@item.TotalPrice.ToString("C")</td></span></li>
+                        <li><span>delivery:</span> <span>Free</span></li>
+                            <li><span>total:</span> <span>@item.TotalPrice.ToString("C")</span></li>
+                        }
+                    </ul>
+
+
+                    <div class="cart-btn mt-100">
+@*                         <a href="#" class="btn amado-btn w-100">Checkout</a>
+ *@                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>

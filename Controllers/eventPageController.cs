@@ -18,25 +18,26 @@ namespace ECommerceWebsite.Controllers
             _context = context;
             _hostEnvironment = hostEnvironment;
         }
-        public  IActionResult Index(int? id)
+        public IActionResult Index(int? id)
         {
+            // Filter to exclude soft-deleted events
+            IQueryable<Events> eventsQuery = _context.Eventses.Where(e => !e.IsDeleted);
 
-            IEnumerable<Events> eventes = _context.Eventses;
-
-            if (id !=null)
+            if (id != null)
             {
-               
-                eventes = _context.Eventses.Where(e => e.CategoryEventID == id);
+                // Further filter by CategoryEventID if provided
+                eventsQuery = eventsQuery.Where(e => e.CategoryEventID == id);
             }
 
+            // Fetch the event categories to populate the view model
+            var eventCategories = _context.EventCategories.ToList();
 
-            EventIndexViewModel eventVM = new()
+            // Create and populate the ViewModel
+            EventIndexViewModel eventVM = new EventIndexViewModel
             {
-                EventCategories =_context.EventCategories,           
-                Events = eventes,
+                EventCategories = eventCategories,
+                Events = eventsQuery.ToList(), // Execute the query to get the list of events
             };
-            
-
 
             return View(eventVM);
         }

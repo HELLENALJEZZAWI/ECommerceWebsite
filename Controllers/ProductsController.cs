@@ -26,14 +26,14 @@ namespace ECommerceWebsite.Controllers
                 .ToListAsync();
 
             var categories = await _context.Categories.ToListAsync();
-
+            ViewBag.Categories = categories;
             var viewModel = new ProductIndexViewModel
             {
                 Products = products,
                 Categories = categories
             };
 
-            return View(viewModel);
+            return View(products);
         }
         public async Task<IActionResult> AdminProductIndex()
         {
@@ -53,25 +53,18 @@ namespace ECommerceWebsite.Controllers
 
             return View();
         }
-        public async Task<IActionResult> LoadMoreProducts(int skip, int take)
+
+        public IActionResult GetProductPartialView(int categoryId)
         {
-            var products = await _context.Products
+            var products =  _context.Products
                 .Include(p => p.Category)
                 .Include(p => p.ProductPhotos)
-                .OrderBy(p => p.ProductID)
-                .Skip(skip)
-                .Take(take)
-                .ToListAsync();
+                .Where(p=>p.CategoryID == categoryId)
 
-            return PartialView("_ProductListPartial", products);
-        }
-        public IActionResult FilterByCategory(string category)
-        {
-            var filteredProducts = _context.Products
-                .Where(p => p.Category.CategoryName == category)
+                //.Take(3)
                 .ToList();
+            return PartialView("_ProductListPartial", products);
 
-            return PartialView("_ProductList", filteredProducts);
         }
 
         public async Task<IActionResult> Details(int? id)
